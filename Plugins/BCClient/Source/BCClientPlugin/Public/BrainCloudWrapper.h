@@ -216,6 +216,184 @@ public:
      */
     void authenticateUniversal(FString userid, FString password, bool forceCreate, IServerCallback * callback = nullptr);
 
+
+
+
+
+
+
+    /*
+     * Smart Switch Authenticate will logout of the current profile, and switch to the new authentication type.
+     * In event the current session was previously an anonymous account, the smart switch will delete that profile.
+     * Use this function to keep a clean designflow from anonymous to signed profiles
+     *
+     * Authenticate the user with a custom Email and Password.  Note that the client app
+     * is responsible for collecting (and storing) the e-mail and potentially password
+     * (for convenience) in the client data.  For the greatest security,
+     * force the user to re-enter their * password at each login.
+     * (Or at least give them that option).
+     *
+     * Note that the password sent from the client to the server is protected via SSL.
+     *
+     * Service Name - Authenticate
+     * Service Operation - Authenticate
+     *
+     * @param email  The e-mail address of the user
+     * @param password  The password of the user
+     * @param forceCreate Should a new profile be created for this user if the account does not exist?
+     * @param callback The method to be invoked when the server response is received
+     *
+     */
+    void smartSwitchAuthenticateEmailPassword(FString email, FString password, bool forceCreate, IServerCallback * callback = NULL);
+
+    /**
+     * Smart Switch Authenticate will logout of the current profile, and switch to the new authentication type.
+     * In event the current session was previously an anonymous account, the smart switch will delete that profile.
+     * Use this function to keep a clean designflow from anonymous to signed profiles
+     *
+     * Authenticate the user via cloud code (which in turn validates the supplied credentials against an external system).
+     * This allows the developer to extend brainCloud authentication to support other backend authentication systems.
+     *
+     * Service Name - Authenticate
+     * Server Operation - Authenticate
+     *
+     * @param userid The user id
+     * @param token The user token (password etc)
+     * @param externalAuthName The name of the cloud script to call for external authentication
+     * @param force Should a new profile be created for this user if the account does not exist?
+     *
+     * @returns   performs the success callback on success, failure callback on failure
+     */
+    void smartSwitchAuthenticateExternal(FString userid, FString token, FString externalAuthName, bool forceCreate, IServerCallback * callback = NULL);
+
+    /*
+     * Smart Switch Authenticate will logout of the current profile, and switch to the new authentication type.
+     * In event the current session was previously an anonymous account, the smart switch will delete that profile.
+     * Use this function to keep a clean designflow from anonymous to signed profiles
+     *
+     * Authenticate the user with brainCloud using their Facebook Credentials
+     *
+     * Service Name - Authenticate
+     * Service Operation - Authenticate
+     *
+     * @param fbUserId The facebook id of the user
+     * @param fbAuthToken The validated token from the Facebook SDK
+     *   (that will be further validated when sent to the bC service)
+     * @param forceCreate Should a new profile be created for this user if the account does not exist?
+     * @param callback The method to be invoked when the server response is received
+     *
+     */
+    void smartSwitchAuthenticateFacebook(FString fbUserId, FString fbAuthToken, bool forceCreate, IServerCallback * callback = NULL);
+
+    /*
+     * Smart Switch Authenticate will logout of the current profile, and switch to the new authentication type.
+     * In event the current session was previously an anonymous account, the smart switch will delete that profile.
+     * Use this function to keep a clean designflow from anonymous to signed profiles
+     *
+     * Authenticate the user using their Game Center id
+     *
+     * Service Name - Authenticate
+     * Service Operation - Authenticate
+     *
+     * @param gameCenterId The player's game center id  (use the playerID property from the local GKPlayer object)
+     * @param forceCreate Should a new profile be created for this user if the account does not exist?
+     * @param success The method to call in event of successful login
+     * @param failure The method to call in the event of an error during authentication
+     *
+     * @returns   performs the success callback on success, failure callback on failure
+     *
+     */
+    void smartSwitchAuthenticateGameCenter(FString gameCenterId, bool forceCreate, IServerCallback * callback = NULL);
+
+    /*
+     * Smart Switch Authenticate will logout of the current profile, and switch to the new authentication type.
+     * In event the current session was previously an anonymous account, the smart switch will delete that profile.
+     * Use this function to keep a clean designflow from anonymous to signed profiles
+     *
+     * Authenticate the user using a google userid(email address) and google authentication token.
+     *
+     * Service Name - Authenticate
+     * Service Operation - Authenticate
+     *
+     * @param userid  String representation of google+ userid (email)
+     * @param token  The authentication token derived via the google apis.
+     * @param forceCreate Should a new profile be created for this user if the account does not exist?
+     * @param callback The method to be invoked when the server response is received
+     *
+     * @returns   performs the success callback on success, failure callback on failure
+     *
+     */
+
+    void smartSwitchAuthenticateGoogle(FString userid, FString token, bool forceCreate, IServerCallback * callback = NULL);
+    /*
+     * Smart Switch Authenticate will logout of the current profile, and switch to the new authentication type.
+     * In event the current session was previously an anonymous account, the smart switch will delete that profile.
+     * Use this function to keep a clean designflow from anonymous to signed profiles
+     *
+     * Authenticate the user using a steam userid and session ticket (without any validation on the userid).
+     *
+     * Service Name - Authenticate
+     * Service Operation - Authenticate
+     *
+     * @param userid  String representation of 64 bit steam id
+     * @param sessionticket  The session ticket of the user (hex encoded)
+     * @param forceCreate Should a new profile be created for this user if the account does not exist?
+     * @param callback The method to be invoked when the server response is received
+     *
+     * @returns   performs the success callback on success, failure callback on failure
+     *
+     */
+
+    void smartSwitchAuthenticateSteam(FString userid, FString sessionticket, bool forceCreate, IServerCallback * callback = NULL);
+    /*
+     * Smart Switch Authenticate will logout of the current profile, and switch to the new authentication type.
+     * In event the current session was previously an anonymous account, the smart switch will delete that profile.
+     * Use this function to keep a clean designflow from anonymous to signed profiles
+     *
+     * Authenticate the user using a Twitter userid, authentication token, and secret from Twitter.
+     *
+     * Service Name - Authenticate
+     * Service Operation - Authenticate
+     *
+     * @param userid  String representation of Twitter userid
+     * @param token  The authentication token derived via the Twitter apis.
+     * @param secret  The secret given when attempting to link with Twitter
+     * @param forceCreate Should a new profile be created for this user if the account does not exist?
+     * @param callback The method to be invoked when the server response is received
+     *
+     * @returns   performs the success callback on success, failure callback on failure
+     *
+     */
+    void smartSwitchAuthenticateTwitter(FString userid, FString token, FString secret, bool forceCreate, IServerCallback * callback = NULL);
+
+    /*
+     * Smart Switch Authenticate will logout of the current profile, and switch to the new authentication type.
+     * In event the current session was previously an anonymous account, the smart switch will delete that profile.
+     * Use this function to keep a clean designflow from anonymous to signed profiles
+     *
+     * Authenticate the user using a userid and password (without any validation on the userid).
+     * Similar to AuthenticateEmailPassword - except that that method has additional features to
+     * allow for e-mail validation, password resets, etc.
+     *
+     * Service Name - Authenticate
+     * Service Operation - Authenticate
+     *
+     * @param email  The e-mail address of the user
+     * @param password  The password of the user
+     * @param forceCreate Should a new profile be created for this user if the account does not exist?
+     * @param callback The method to be invoked when the server response is received
+     *
+     */
+    void smartSwitchAuthenticateUniversal(FString userid, FString password, bool forceCreate, IServerCallback * callback = NULL);
+
+
+
+
+
+
+
+
+
 	/*
 	* Re-authenticates the user with brainCloud
 	* 
@@ -267,7 +445,7 @@ public:
      * Returns a singleton instance of the BrainCloudClient.
      * @return A singleton instance of the BrainCloudClient.
      */
-    static BrainCloudClient* getBC() { return getInstance()->_client; }
+    static BrainCloudClient* getBC() { return NULL; }
 
     /**
      * Returns a singleton instance of the BrainCloudClient.
@@ -362,6 +540,8 @@ protected:
 
     void initializeIdentity(bool isAnonymousAuth = false);
     void reauthenticate();
+
+    void getIdentitiesCallback(IServerCallback *success);
 
     // these methods are not really used
     FString getStoredAuthenticationType() { return _authenticationType; }

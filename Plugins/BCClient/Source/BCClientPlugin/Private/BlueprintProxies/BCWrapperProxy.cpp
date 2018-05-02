@@ -31,6 +31,16 @@ void UBCWrapperProxy::ClearDefaultBrainCloudInstance()
 	DefaultBrainCloudInstance = nullptr;
 }
 
+
+UBCWrapperProxy* UBCWrapperProxy::AuthenticateUniversal(ABrainCloud *brainCloud, FString userId, FString password, bool forceCreate)
+{
+    UBCWrapperProxy* Proxy = NewObject<UBCWrapperProxy>();
+	UBCWrapperProxy::GetBrainCloudInstance(brainCloud)->smartSwitchAuthenticateUniversal(userId, password, forceCreate, Proxy);
+    return Proxy;
+}
+
+
+
 BrainCloudWrapper *UBCWrapperProxy::GetBrainCloudInstance(ABrainCloud *brainCloud)
 {
 	// Using a passed in instance of brainCloud
@@ -46,17 +56,21 @@ BrainCloudWrapper *UBCWrapperProxy::GetBrainCloudInstance(ABrainCloud *brainClou
 	// Using the brainCloud singleton (not recommended)
 	else 
 	{
-		return BrainCloudWrapper::getInstance();
+		return NULL;
 	}
 }
 
 //callbacks
 void UBCWrapperProxy::serverCallback(ServiceName serviceName, ServiceOperation serviceOperation, const FString& jsonData)
 {
-	// unused
+	FBC_ReturnData returnData = FBC_ReturnData(serviceName.getValue(), serviceOperation.getValue(), 200, 0);
+    OnSuccess.Broadcast(jsonData, returnData);
+	ConditionalBeginDestroy();
 }
 
 void UBCWrapperProxy::serverError(ServiceName serviceName, ServiceOperation serviceOperation, int32 statusCode, int32 reasonCode, const FString& jsonError)
 {
-	// unused
+	FBC_ReturnData returnData = FBC_ReturnData(serviceName.getValue(), serviceOperation.getValue(), statusCode, reasonCode);
+    OnFailure.Broadcast(jsonError, returnData);
+	ConditionalBeginDestroy();
 }

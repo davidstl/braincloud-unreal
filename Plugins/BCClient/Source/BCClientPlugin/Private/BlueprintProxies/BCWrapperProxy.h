@@ -12,7 +12,7 @@ class BrainCloudWrapper;
 class ABrainCloud;
 
 UCLASS(BlueprintType)
-class UBCWrapperProxy : public UBCBlueprintCallProxyBase
+class UBCWrapperProxy : public UBCBlueprintCallProxyBase, public IServerCallback
 {
 	GENERATED_BODY()
 
@@ -45,12 +45,36 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "BrainCloud")
 		static void ClearDefaultBrainCloudInstance();
 
+
+	/*
+    * Wrapper Authenticate the user using a userid and password (without any validation on the userid).
+    * Similar to AuthenticateEmailPassword - except that that method has additional features to
+    * allow for e-mail validation, password resets, etc.
+    *
+    * Service Name - Wrapper Authenticate
+    * Service Operation - Authenticate
+    *
+    * Param - email  The e-mail address of the user
+    * Param - password  The password of the user
+    * Param - forceCreate Should a new profile be created for this user if the account does not exist?
+    */
+    UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true"), Category = "BrainCloud|WrapperAuthentication")
+        static UBCWrapperProxy* AuthenticateUniversal(ABrainCloud *brainCloud, FString userId, FString password, bool forceCreate);
+
 	/**
 	* Returns a non null reference to brainCloud
 	*
 	* @param brainCloud - An actor that contains its own instance of the brainCloud Wrapper
 	*/
 	static BrainCloudWrapper *GetBrainCloudInstance(ABrainCloud *brainCloud);
+
+
+	 //Response delegates
+    UPROPERTY(BlueprintAssignable)
+        FBrainCloudCallbackDelegate OnSuccess;
+
+    UPROPERTY(BlueprintAssignable)
+        FBrainCloudCallbackDelegate OnFailure;
 
 protected:
 	// IServerCallback interface
